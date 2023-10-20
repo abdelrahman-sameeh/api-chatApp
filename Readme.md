@@ -20,7 +20,7 @@ PASSWORD_EMAIL=(key from this email)
 
 3 - create a folder /uploads
 
-4 - create three (folder || directories) in uploads => (images) 
+4 - create a (folder || directories) in uploads => (images) 
 
 5 - npm run dev
 
