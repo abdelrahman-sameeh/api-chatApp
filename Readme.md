@@ -18,9 +18,9 @@ PASSWORD_EMAIL=(key from this email)
 </pre>
 
 
-3 - create a folder /src/uploads
+3 - create a folder /uploads
 
-4 - create three (folder || directories) in uploads => (Category & meals & QRs) with sensitive case
+4 - create a (folder || directories) in uploads => (images) 
 
 5 - npm run dev
 
