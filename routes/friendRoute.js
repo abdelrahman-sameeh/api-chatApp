@@ -1,26 +1,20 @@
 const express = require("express");
 const {
-  sendRequest,
-  cancelRequest,
-  acceptRequest,
-  deleteFriend,
+  getFriendRequestReceived,
+  getFriendRequestSent,
+  getLoggedUserFriends,
+  getListOfUsers,
+  getAllFriends,
 } = require("../services/friendService");
 const { protect } = require("../services/authService");
-const { checkFriendIdValidator } = require("../validator/friendValidator");
 const router = express.Router();
 
-router.put("/sendRequest/:id", protect, checkFriendIdValidator, sendRequest);
-router.put(
-  "/cancelRequest/:id",
-  protect,
-  checkFriendIdValidator,
-  cancelRequest
-);
-router.put(
-  "/acceptRequest/:id",
-  protect,
-  acceptRequest
-);
-router.put("/deleteFriend/:id", protect, checkFriendIdValidator, deleteFriend);
+router.get("/friendRequestReceived", protect, getFriendRequestReceived);
+router.get("/friendRequestSent", protect, getFriendRequestSent);
+router.get("/friends", protect, getLoggedUserFriends);
+
+router.get("/listOfUsers", protect, getListOfUsers);
+
+router.get('/getAllFriends', protect, getAllFriends)
 
 module.exports = router;

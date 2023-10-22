@@ -10,7 +10,10 @@ const messageSchema = mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
-  date: Date,
+  date: {
+    type: Date,
+    default: new Date(Date.now()),
+  },
 });
 
 const Message = mongoose.model("Message", messageSchema);

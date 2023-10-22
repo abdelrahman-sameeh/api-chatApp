@@ -2,6 +2,7 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const server = require("http").createServer(app);
 const morgan = require("morgan");
 const cors = require("cors");
 
@@ -13,6 +14,27 @@ const {
   connectWithDatabase,
 } = require("./middleware/databaseConnectionMiddleware");
 const { mountRoutes } = require("./routes");
+const { Server } = require("socket.io");
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+io.onlineUsers = {};
+
+// import socket files
+require("./sockets/initialSocket")(io);
+require("./sockets/addFriendSocket")(io);
+require("./sockets/cancelFriendRequestSocket")(io);
+require("./sockets/acceptFriendRequestSocket")(io);
+require("./sockets/removeFriendFromFriends")(io);
+require("./sockets/rejectFriendRequestSocket")(io);
+require("./sockets/sendMessageSocket")(io);
+require("./sockets/onlineFriendsSocket")(io);
+
+
 
 // to make uploads a static file
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -46,10 +68,9 @@ app.all("*", (req, res, next) => {
 // global error function
 app.use(globalHandleError);
 
-
-
 const PORT = process.env.PORT || 3001;
-const server = app.listen(PORT, "0.0.0.0", (err) => {
+
+server.listen(PORT, "0.0.0.0", (err) => {
   if (!err) {
     console.log("app listening on port " + PORT);
   }

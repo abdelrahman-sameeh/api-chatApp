@@ -29,6 +29,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    image: {
+      type: String,
+      default: 'user.svg'
+    },
     friends: [
       {
         type: mongoose.Schema.ObjectId,
@@ -55,6 +59,22 @@ const userSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.post("init", (doc) => {
+  if (doc.image) {
+    const image = `${process.env.BASE_URL}/uploads/images/${doc.image}`;
+    doc.image = image;
+  }
+});
+
+userSchema.post("save", (doc) => {
+  if (doc.image) {
+    const image = `${process.env.BASE_URL}/uploads/images/${doc.image}`;
+    doc.image = image;
+  }
+});
+
+
 
 const User = mongoose.model("User", userSchema);
 
