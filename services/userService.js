@@ -44,12 +44,12 @@ exports.updateUserInfo = expressAsyncHandler(async (req, res, next) => {
       email: response.email,
       role: response.role,
       phone: response.phone,
-      image: response.image
+      image: response.image,
     },
   });
 });
 
-exports.uploadImage = (field)=> {
+exports.uploadImage = (field) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, "uploads/images/");
@@ -64,8 +64,20 @@ exports.uploadImage = (field)=> {
 };
 
 exports.setImageInBody = (req, res, next) => {
-  if(req.file){
-    req.body.image = req.file.filename
+  if (req.file) {
+    req.body.image = req.file.filename;
   }
-  next()
+  next();
 };
+
+exports.removeImage = expressAsyncHandler(async (req, res, next) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      image: "user.svg",
+    },
+    { new: true }
+  );
+
+  res.status(200).json({ msg: "delete image successfully" });
+});

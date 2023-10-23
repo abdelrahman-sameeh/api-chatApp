@@ -4,6 +4,7 @@ const {
   updateUserInfo,
   uploadImage,
   setImageInBody,
+  removeImage
 } = require("../services/userService");
 const AuthService = require("../services/authService");
 const router = express.Router();
@@ -18,5 +19,11 @@ router.post(
   setImageInBody,
   updateUserInfo 
 );
+
+router.delete(
+  "/removeImage",
+  AuthService.protect,
+  removeImage
+)
 
 module.exports = router;
