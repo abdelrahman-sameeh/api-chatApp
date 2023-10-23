@@ -2,6 +2,8 @@ const express = require("express");
 const {
   getLoggedUser,
   updateUserInfo,
+  uploadImage,
+  setImageInBody,
 } = require("../services/userService");
 const AuthService = require("../services/authService");
 const router = express.Router();
@@ -9,6 +11,12 @@ const router = express.Router();
 // for user
 router.get("/user", AuthService.protect, getLoggedUser);
 
-router.post("/updateUserInfo", AuthService.protect, updateUserInfo);
+router.post(
+  "/updateUserInfo",
+  AuthService.protect,
+  uploadImage("image"),
+  setImageInBody,
+  updateUserInfo 
+);
 
 module.exports = router;

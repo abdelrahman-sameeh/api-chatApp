@@ -2,6 +2,7 @@ const expressAsyncHandler = require("express-async-handler");
 const User = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
+const multer = require("multer");
 
 // @desc      get logged user
 // @route     GET  /api/v1/user
@@ -25,13 +26,8 @@ exports.updateUserInfo = expressAsyncHandler(async (req, res, next) => {
   if (req.body.name) {
     data.name = req.body.name;
   }
-
-  if (req.body.email) {
-    data.email = req.body.email;
-  }
-
-  if (req.body.phone) {
-    data.phone = req.body.phone;
+  if (req.body.image) {
+    data.image = req.body.image;
   }
 
   if (!check) {
@@ -48,6 +44,28 @@ exports.updateUserInfo = expressAsyncHandler(async (req, res, next) => {
       email: response.email,
       role: response.role,
       phone: response.phone,
+      image: response.image
     },
   });
 });
+
+exports.uploadImage = (field)=> {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "uploads/images/");
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(null, file.fieldname + "-" + uniqueSuffix + "-" + file.originalname);
+    },
+  });
+  let upload = multer({ storage: storage });
+  return upload.single(field);
+};
+
+exports.setImageInBody = (req, res, next) => {
+  if(req.file){
+    req.body.image = req.file.filename
+  }
+  next()
+};

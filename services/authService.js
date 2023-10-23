@@ -63,6 +63,7 @@ exports.login = expressAsyncHandler(async (req, res, next) => {
       email: user.email,
       phone: user.phone,
       _id: user._id,
+      image: user.image
     },
     token: generateToken(user._id),
   });
