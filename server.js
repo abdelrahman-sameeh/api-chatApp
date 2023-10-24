@@ -16,9 +16,12 @@ const {
 const { mountRoutes } = require("./routes");
 const { Server } = require("socket.io");
 
+// to set other client to access data
+app.use(cors());
+
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", 'https://master--chatappsockets.netlify.app/'],
+    origin: ["http://localhost:3000", 'https://master--chatappsockets.netlify.app'],
   },
 });
 
@@ -39,8 +42,7 @@ require("./sockets/onlineFriendsSocket")(io);
 // to make uploads a static file
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// to set other client to access data
-app.use(cors());
+
 
 // connecting with database
 connectWithDatabase();
